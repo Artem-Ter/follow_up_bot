@@ -55,7 +55,7 @@ def main():
     dp.add_handler(MessageHandler(filters.Filters.attachment, handle_document))
 
     # Start polling
-    updater.start_polling()
+    updater.start_polling(11)
 
     # Run the bot until you send a signal to stop it
     updater.idle()

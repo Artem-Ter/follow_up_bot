@@ -125,6 +125,12 @@ def get_open_orders(orders, current_data, currency_type):
                     break
             if sell_crypto:
                 currency = sell_ex_rate * sell_crypto
+                accum_currency += (sell_currency - currency)
+                if sell_crypto < 0.01 and result:
+                    item = result.pop()
+                    sell_crypto += item['crypto']
+                    currency += item['currency']
+                    sell_ex_rate = round(currency / sell_crypto, 2)
                 sell_dict = {
                     "type": 'SELL',
                     "ex_rate": sell_ex_rate,
@@ -132,7 +138,6 @@ def get_open_orders(orders, current_data, currency_type):
                     "currency": currency
                 }
                 result += [sell_dict]
-                accum_currency += (sell_currency - currency)
     current_data[currency_type] = current_data.get(currency_type, 0) + accum_currency
     current_data['crypto'] = current_data.get('crypto', 0) + accum_crypto
     result += temp_buy
