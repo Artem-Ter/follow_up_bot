@@ -32,7 +32,10 @@ def new_ads(update, context) -> None:
 
 def wake_up(update, context) -> None:
     """Bot send message to chat and send photo from func get_new_image"""
-    button = ReplyKeyboardMarkup([['/casas_terrenos', '/manga']], resize_keyboard=True)
+    button = ReplyKeyboardMarkup(
+        [['/casas_terrenos', '/manga']],
+        resize_keyboard=True
+    )
     context.bot.send_message(
         chat_id=chat_id,
         text='Bot is active',
@@ -64,6 +67,7 @@ def manga(update, context):
         text=message
     )
 
+
 def main():
     updater = Updater(secret_token)
     # Get the dispatcher from the bot
@@ -74,7 +78,6 @@ def main():
     dp.add_handler(CommandHandler('casas_terrenos', new_ads))
     dp.add_handler(MessageHandler(filters.Filters.attachment, handle_document))
     dp.add_handler(CommandHandler('manga', manga))
-    
 
     # Start polling
     updater.start_polling(11)

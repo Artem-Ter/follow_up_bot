@@ -1,7 +1,6 @@
 import re
 
 import requests
-
 from search_params import HEADERS
 from utils import get_file_path, load_previous_data, save_data_to_file
 
@@ -25,6 +24,6 @@ def get_manga_chapters():
             last_chapter = mathces[-1]
             if last_chapter != previous_chapter:
                 result.append(f'{base_url}{last_chapter}')
-                previous_chapters[manga] = last_chapter       
+                previous_chapters[manga] = last_chapter
     save_data_to_file(file_path, previous_chapters)
     return result
