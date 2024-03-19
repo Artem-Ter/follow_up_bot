@@ -1,7 +1,6 @@
 anyio==4.0.0
 APScheduler==3.6.3
 attrs==23.2.0
-backports.zoneinfo==0.2.1
 beautifulsoup4==4.12.2
 binance==0.3
 cachetools==4.2.2
