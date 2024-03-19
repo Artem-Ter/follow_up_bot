@@ -1,10 +1,9 @@
-import requests
 import re
 
+import requests
+
 from search_params import HEADERS
-from utils import (save_data_to_file,
-                   load_previous_data,
-                   get_file_path)
+from utils import get_file_path, load_previous_data, save_data_to_file
 
 
 def get_manga_chapters():

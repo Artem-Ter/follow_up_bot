@@ -1,17 +1,14 @@
 
 import json
-import pandas as pd
 from datetime import datetime
+
+import pandas as pd
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
-from utils import (get_file_path,
-                   load_previous_data,
-                   save_data_to_file)
-from search_params import (PRICES,
-                           SEARCH_URLS,
-                           BAIROS)
+from search_params import BAIROS, PRICES, SEARCH_URLS
+from utils import get_file_path, load_previous_data, save_data_to_file
 
 
 def get_ads(url):
