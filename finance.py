@@ -1,11 +1,9 @@
-import requests
-import pandas as pd
 import csv
 
+import pandas as pd
+import requests
 from forex_python.converter import CurrencyRates
-from utils import (get_file_path,
-                   load_previous_data,
-                   save_data_to_file)
+from utils import get_file_path, load_previous_data, save_data_to_file
 
 
 def get_exchange_rate():
