@@ -25,7 +25,7 @@ jobs:
         pip install isort
     - name: Check commit message
       run: |
-        COMMIT_MSG="${{ github.event.head_commit.message }}"
+        COMMIT_MSG=${{ github.event.head_commit.message }}
         if [[ ! $COMMIT_MSG =~ ^TF[0-9]+:\ .+ ]]; then
           echo "Error: Commit message does not match required format."
           exit 1
