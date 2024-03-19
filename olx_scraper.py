@@ -1,39 +1,42 @@
-import requests
+
 import json
 import pandas as pd
 from datetime import datetime
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 
-from bs4 import BeautifulSoup
 from utils import (get_file_path,
                    load_previous_data,
                    save_data_to_file)
 from search_params import (PRICES,
                            SEARCH_URLS,
-                           HEADERS,
                            BAIROS)
 
 
 def get_ads(url):
-    response = requests.get(url, headers=HEADERS)
-    response_code = response.status_code
-    if response_code == 200:
-        soup = BeautifulSoup(response.text, 'html.parser')
-        data = str(soup)
-        # Extracting JSON string from the text
-        start_index = data.find('{"props":{"pageProps":')
-        end_index = data.find('</script>', start_index)
-        json_data = data[start_index:end_index]
-        # Loading JSON data
-        parsed_data = json.loads(json_data)
-        ads = parsed_data['props']['pageProps']['ads']
-        return ads
+    service = Service(executable_path=ChromeDriverManager().install())
+    # Запуск веб-драйвера для Chrome.
+    driver = webdriver.Chrome(service=service)
+    # Открытие страницы по заданному адресу.
+    driver.get(url)
+    data = driver.page_source
+    # Extracting JSON string from data
+    start_index = data.find('{"props":{"pageProps":')
+    end_index = data.find('</script>', start_index)
+    json_data = data[start_index:end_index]
+    # Loading JSON data
+    parsed_data = json.loads(json_data)
+    ads = parsed_data['props']['pageProps']['ads']
+    driver.quit()
+    return ads
 
 
 def check_posts(url, previous_data, new_posts, last_update):
     flag = True
-    count = 1
+    page = 1
     while flag:
-        check_url = f'{url}{count}'
+        check_url = f'{url}{page}'
         ads = get_ads(check_url)
         if not ads:
             break
@@ -77,7 +80,7 @@ def check_posts(url, previous_data, new_posts, last_update):
             # Update old posts if they were refreshed
             # and add new ones to previous_data
             previous_data[title] = ad_data
-        count += 1
+        page += 1
 
 
 def get_properties(ad_properties):

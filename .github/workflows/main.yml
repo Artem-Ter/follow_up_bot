@@ -1,0 +1,44 @@
+# .github/workflows/main.yml
+name: follow_up main workflow
+
+on:
+  push:
+    branches:
+      - '**'
+
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    permissions:
+      # Give the default GITHUB_TOKEN write permission to commit and push the
+      # added or changed files to the repository.
+      contents: write
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.10
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip 
+        pip install flake8==6.0.0 isort
+        pip install -r ./backend/requirements.txt 
+    - name: Test with flake8
+      run: |
+        python -m flake8 backend/
+    - name: Check commit message
+      run: |
+        COMMIT_MSG=${{ github.event.head_commit.message }}
+        if [[ ! $COMMIT_MSG =~ ^TF[0-9]+:.+ ]]; then
+          echo "Error: Commit message does not match required format."
+          exit 1
+        fi
+    - name: Auto-correct imports
+      run: isort --atomic .
+    # Commit all changed files back to the repository
+    - uses: stefanzweifel/git-auto-commit-action@v5
+      with:
+        commit_message: "fix(imports): Autocorrected with isort"
+
+  
