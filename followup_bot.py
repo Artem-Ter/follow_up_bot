@@ -1,11 +1,12 @@
 import os
 
 from dotenv import load_dotenv
+from telegram import ReplyKeyboardMarkup
+from telegram.ext import CommandHandler, MessageHandler, Updater, filters
+
 from finance import get_report
 from manga import get_manga_chapters
 from olx_scraper import get_new_posts_file
-from telegram import ReplyKeyboardMarkup
-from telegram.ext import CommandHandler, MessageHandler, Updater, filters
 from utils import get_file_path
 
 load_dotenv()
