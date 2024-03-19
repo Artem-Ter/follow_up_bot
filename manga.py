@@ -1,6 +1,7 @@
 import re
 
 import requests
+
 from search_params import HEADERS
 from utils import get_file_path, load_previous_data, save_data_to_file
 
